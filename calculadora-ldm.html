@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora LDM — Gupy</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f9f9f7;color:#1a1a1a;min-height:100vh;padding:2rem 1rem}
+  .container{max-width:900px;margin:0 auto}
+  h1{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:.25rem}
+  .subtitle{font-size:13px;color:#888;margin-bottom:2rem}
+  .sec-title{font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:.25rem}
+  .sec-desc{font-size:12px;color:#888;margin-bottom:1.25rem}
+  .divider{border:none;border-top:1px solid #e8e8e4;margin:2rem 0}
+  .top-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.75rem}
+  @media(max-width:600px){.top-row{grid-template-columns:1fr 1fr}}
+  .field label{font-size:12px;color:#888;display:block;margin-bottom:4px}
+  .field input{width:100%;font-size:14px;padding:8px 10px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#1a1a1a}
+  .field input:focus{outline:none;border-color:#1a1a1a}
+  .kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1.5rem}
+  @media(max-width:600px){.kpi-grid{grid-template-columns:1fr 1fr}}
+  .kpi-card{border:1px solid #e8e8e4;border-radius:12px;padding:1rem;background:#fff}
+  .kpi-card label{font-size:11px;color:#888;display:block;margin-bottom:4px}
+  .kpi-card .kpi-name{font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px}
+  .kpi-card .kpi-sub{font-size:10px;color:#aaa;margin-bottom:.75rem}
+  .kpi-card input{width:100%;font-size:15px;font-weight:500;padding:8px 10px;border:1px solid #e8e8e4;border-radius:8px;background:#f9f9f7;color:#1a1a1a;text-align:right}
+  .kpi-card input:focus{outline:none;border-color:#1a1a1a;background:#fff}
+  .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1.5rem}
+  @media(max-width:600px){.result-grid{grid-template-columns:1fr 1fr}}
+  .rcard{border:1px solid #e8e8e4;border-radius:12px;padding:1rem;background:#fff}
+  .rcard .rname{font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:2px}
+  .rcard .rsub{font-size:10px;color:#aaa;margin-bottom:.75rem}
+  .rcard input{width:100%;font-size:15px;font-weight:500;padding:8px 10px;border:1px solid #e8e8e4;border-radius:8px;background:#f9f9f7;color:#1a1a1a;text-align:right;margin-bottom:.75rem}
+  .rcard input:focus{outline:none;border-color:#1a1a1a;background:#fff}
+  .ating-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px}
+  .ating-lbl{color:#888}
+  .ating-val{font-size:13px;font-weight:500}
+  .proj-row{display:flex;justify-content:space-between;font-size:12px}
+  .proj-lbl{color:#888}
+  .proj-val{font-size:12px;font-weight:500}
+  .mini-bar{height:4px;background:#f0f0ec;border-radius:2px;overflow:hidden;margin-top:6px}
+  .mini-fill{height:100%;border-radius:2px;transition:width .3s}
+  .g{color:#1D9E75}.r{color:#E24B4A}.am{color:#BA7517}.n{color:#1a1a1a}
+  .verdict-box{background:#f9f9f7;border:1px solid #e8e8e4;border-radius:12px;padding:1.25rem;margin-bottom:1.5rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:600px){.verdict-box{grid-template-columns:1fr 1fr}}
+  .vb .vl{font-size:11px;color:#888;margin-bottom:4px}
+  .vb .vv{font-size:22px;font-weight:500}
+  .vb .vs{font-size:11px;color:#888;margin-top:3px}
+  .badge{display:inline-block;font-size:12px;padding:4px 12px;border-radius:20px;font-weight:500;margin-top:.5rem}
+  .bg{background:#EAF3DE;color:#3B6D11}.br{background:#FCEBEB;color:#A32D2D}.ba{background:#FAEEDA;color:#854F0B}
+  .pill-group{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+  .pill{padding:6px 16px;font-size:12px;border-radius:20px;border:1px solid #ddd;background:#fff;color:#888;cursor:pointer;transition:all .15s}
+  .pill.active{background:#EBF4FF;color:#1a73e8;border-color:#93c5fd}
+  .pill:hover{border-color:#aaa}
+  .ctx{font-size:12px;color:#888;background:#f9f9f7;border-radius:8px;padding:10px 14px;margin-bottom:1.25rem;border:1px solid #e8e8e4}
+  .sw{margin-bottom:1.25rem}
+  .sh{display:flex;justify-content:space-between;margin-bottom:5px}
+  .sl{font-size:13px;color:#888}
+  .sv{font-size:13px;font-weight:500;color:#1a1a1a}
+  input[type=range]{width:100%;accent-color:#1a1a1a}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem}
+  @media(max-width:500px){.compare{grid-template-columns:1fr}}
+  .ccard{border:1px solid #e8e8e4;border-radius:12px;padding:1rem 1.25rem;background:#fff}
+  .ccard.after{border-color:#1D9E75}
+  .cc-lbl{font-size:11px;font-weight:500;color:#888;margin-bottom:.75rem}
+  .cc-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0ec;font-size:13px}
+  .cc-row:last-child{border:none;font-weight:500}
+  .cc-k{color:#888}
+  .r3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:1.5rem}
+  @media(max-width:500px){.r3{grid-template-columns:1fr 1fr}}
+  .mcard{background:#f9f9f7;border-radius:8px;padding:.875rem 1rem;border:1px solid #e8e8e4}
+  .mcard .ml{font-size:11px;color:#888;margin-bottom:4px}
+  .mcard .mv{font-size:22px;font-weight:500}
+  .mcard .ms{font-size:11px;color:#888;margin-top:3px}
+  .gap-lbl{font-size:12px;color:#888;margin-bottom:.5rem}
+  .gap-wrap{height:8px;background:#f0f0ec;border-radius:4px;overflow:hidden;margin-bottom:.375rem}
+  .gap-fill{height:100%;border-radius:4px;transition:width .35s}
+  .gap-foot{display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:1rem}
+  .gap-verdict{margin-bottom:1.5rem}
+  .nota{font-size:11px;color:#aaa;padding:8px 12px;background:#f9f9f7;border-radius:8px;margin-bottom:1rem;border:1px solid #e8e8e4}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Calculadora LDM</h1>
+<p class="subtitle">Levantada de Mão — meta, realizado e simulação de melhorias</p>
+
+<div class="top-row">
+  <div class="field"><label>Mês vigente</label><input type="text" id="mes" value="Abril / 26" oninput="runAll()"></div>
+  <div class="field"><label>Dias úteis do mês</label><input type="number" id="du-total" value="20" oninput="runAll()"></div>
+  <div class="field"><label>Dias úteis decorridos</label><input type="number" id="du-pass" value="14" oninput="runAll()"></div>
+  <div class="field"><label>Pipeline / OPP médio (R$)</label><input type="number" id="ppopp" value="6900" oninput="runAll()"></div>
+</div>
+
+<div class="divider"></div>
+<div class="sec-title">Seção 1 — Meta do mês</div>
+<div class="sec-desc">Insira a meta de cada KPI para o mês vigente.</div>
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-name">Budget</div><div class="kpi-sub">investimento total do mês (R$)</div><label>Meta</label><input type="number" id="m-budget" value="176928" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">CTR médio</div><div class="kpi-sub">cliques / impressões (%)</div><label>Meta</label><input type="number" id="m-ctr" value="3.96" step="0.01" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">Tx. cadastro</div><div class="kpi-sub">pageview → contato qualificado (%)</div><label>Meta</label><input type="number" id="m-cad" value="2.0" step="0.01" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">MQL (LDM)</div><div class="kpi-sub">levantadas de mão</div><label>Meta</label><input type="number" id="m-mql" value="261" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">SQL</div><div class="kpi-sub">qualificados por vendas</div><label>Meta</label><input type="number" id="m-sql" value="130" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">OPP</div><div class="kpi-sub">oportunidades abertas</div><label>Meta</label><input type="number" id="m-opp" value="122" oninput="runAll()"></div>
+  <div class="kpi-card" style="grid-column:1/-1"><div class="kpi-name">Pipeline</div><div class="kpi-sub">valor total de oportunidades (R$)</div><label>Meta</label><input type="number" id="m-pipe" value="541000" oninput="runAll()"></div>
+</div>
+
+<div class="divider"></div>
+<div class="sec-title">Seção 2 — Realizado do mês</div>
+<div class="sec-desc">Insira o realizado até hoje. A calculadora projeta o fechamento no ritmo atual e indica se a meta será atingida.</div>
+<div class="result-grid">
+  <div class="rcard"><div class="rname">Budget</div><div class="rsub">R$ consumido até hoje</div><input type="number" id="r-budget" value="152788" oninput="runAll()"><div class="ating-row"><span class="ating-lbl">Atingido</span><span class="ating-val" id="a-budget">—</span></div><div class="proj-row"><span class="proj-lbl">Projeção mês</span><span class="proj-val" id="p-budget">—</span></div><div class="mini-bar"><div class="mini-fill" id="b-budget"></div></div></div>
+  <div class="rcard"><div class="rname">CTR médio</div><div class="rsub">% atual</div><input type="number" id="r-ctr" value="2.89" step="0.01" oninput="runAll()"><div class="ating-row"><span class="ating-lbl">Atingido</span><span class="ating-val" id="a-ctr">—</span></div><div class="proj-row"><span class="proj-lbl">Ref. H1</span><span class="proj-val">3,96%</span></div><div class="mini-bar"><div class="mini-fill" id="b-ctr"></div></div></div>
+  <div class="rcard"><div class="rname">Tx. cadastro</div><div class="rsub">% atual</div><input type="number" id="r-cad" value="1.57" step="0.01" oninput="runAll()"><div class="ating-row"><span class="ating-lbl">Atingido</span><span class="ating-val" id="a-cad">—</span></div><div class="proj-row"><span class="proj-lbl">Ref. H1</span><span class="proj-val">1,87%</span></div><div class="mini-bar"><div class="mini-fill" id="b-cad"></div></div></div>
+  <div class="rcard"><div class="rname">MQL (LDM)</div><div class="rsub">levantadas de mão até hoje</div><input type="number" id="r-mql" value="120" oninput="runAll()"><div class="ating-row"><span class="ating-lbl">Atingido</span><span class="ating-val" id="a-mql">—</span></div><div class="proj-row"><span class="proj-lbl">Projeção mês</span><span class="proj-val" id="p-mql">—</span></div><div class="mini-bar"><div class="mini-fill" id="b-mql"></div></div></div>
+  <div class="rcard"><div class="rname">Tx. MQL→SQL</div><div class="rsub">% de conversão atual</div><input type="number" id="r-mqltx" value="53" oninput="runAll()"><div class="ating-row"><span class="ating-lbl">Referência</span><span class="ating-val n">histórico</span></div><div class="proj-row"><span class="proj-lbl">Ref. abr</span><span class="proj-val">53%</span></div><div class="mini-bar"><div class="mini-fill" id="b-mqltx" style="width:53%;background:#1D9E75"></div></div></div>
+  <div class="rcard"><div class="rname">SQL</div><div class="rsub">qualificados por vendas até hoje</div><input type="number" id="r-sql" value="69" oninput="runAll()"><div class="ating-row"><span class="ating-lbl">Atingido</span><span class="ating-val" id="a-sql">—</span></div><div class="proj-row"><span class="proj-lbl">Projeção mês</span><span class="proj-val" id="p-sql">—</span></div><div class="mini-bar"><div class="mini-fill" id="b-sql"></div></div></div>
+  <div class="rcard"><div class="rname">Tx. SQL→OPP</div><div class="rsub">% de conversão atual</div><input type="number" id="r-sqltx" value="81" oninput="runAll()"><div class="ating-row"><span class="ating-lbl">Referência</span><span class="ating-val n">histórico</span></div><div class="proj-row"><span class="proj-lbl">Ref. abr</span><span class="proj-val">81%</span></div><div class="mini-bar"><div class="mini-fill" id="b-sqltx" style="width:81%;background:#1D9E75"></div></div></div>
+  <div class="rcard"><div class="rname">OPP</div><div class="rsub">oportunidades abertas até hoje</div><input type="number" id="r-opp" value="56" oninput="runAll()"><div class="ating-row"><span class="ating-lbl">Atingido</span><span class="ating-val" id="a-opp">—</span></div><div class="proj-row"><span class="proj-lbl">Projeção mês</span><span class="proj-val" id="p-opp">—</span></div><div class="mini-bar"><div class="mini-fill" id="b-opp"></div></div></div>
+  <div class="rcard"><div class="rname">Pipeline</div><div class="rsub">valor gerado até hoje (R$)</div><input type="number" id="r-pipe" value="268000" oninput="runAll()"><div class="ating-row"><span class="ating-lbl">Atingido</span><span class="ating-val" id="a-pipe">—</span></div><div class="proj-row"><span class="proj-lbl">Projeção mês</span><span class="proj-val" id="p-pipe">—</span></div><div class="mini-bar"><div class="mini-fill" id="b-pipe"></div></div></div>
+</div>
+
+<div class="verdict-box">
+  <div class="vb"><div class="vl">Pipeline realizado</div><div class="vv g" id="v-real">—</div><div class="vs" id="v-real-s">—</div></div>
+  <div class="vb"><div class="vl">Projeção de fechamento</div><div class="vv" id="v-proj">—</div><div class="vs" id="v-proj-s">—</div></div>
+  <div class="vb"><div class="vl">Vai bater a meta?</div><div class="vv" id="v-verdict">—</div><div id="v-badge"></div></div>
+</div>
+
+<div class="divider"></div>
+<div class="sec-title">Seção 3 — Simular melhoria</div>
+<div class="sec-desc">Escolha uma alavanca e ajuste a intensidade. O impacto é calculado sobre a projeção de fechamento do mês.</div>
+
+<div class="pill-group">
+  <span class="pill active" onclick="selAcao(this,'cro')">CRO na LP</span>
+  <span class="pill" onclick="selAcao(this,'budget')">Budget</span>
+  <span class="pill" onclick="selAcao(this,'ctr')">CTR</span>
+  <span class="pill" onclick="selAcao(this,'cadastro')">Tx. cadastro</span>
+  <span class="pill" onclick="selAcao(this,'mqltx')">Contato → MQL</span>
+</div>
+<div class="ctx" id="ctx-box"></div>
+<div id="sim-sliders"></div>
+
+<div class="compare">
+  <div class="ccard"><div class="cc-lbl">Projeção sem melhoria</div>
+    <div class="cc-row"><span class="cc-k">MQLs</span><span id="bs-mql">—</span></div>
+    <div class="cc-row"><span class="cc-k">SQLs</span><span id="bs-sql">—</span></div>
+    <div class="cc-row"><span class="cc-k">OPPs</span><span id="bs-opp">—</span></div>
+    <div class="cc-row"><span class="cc-k">Pipeline</span><span id="bs-pipe">—</span></div>
+  </div>
+  <div class="ccard after"><div class="cc-lbl">Com a melhoria</div>
+    <div class="cc-row"><span class="cc-k">MQLs</span><span id="ns-mql">—</span></div>
+    <div class="cc-row"><span class="cc-k">SQLs</span><span id="ns-sql">—</span></div>
+    <div class="cc-row"><span class="cc-k">OPPs</span><span id="ns-opp">—</span></div>
+    <div class="cc-row"><span class="cc-k">Pipeline</span><span id="ns-pipe">—</span></div>
+  </div>
+</div>
+
+<div class="r3">
+  <div class="mcard"><div class="ml">Delta MQLs</div><div class="mv" id="d-mql">—</div><div class="ms" id="d-mql-s">—</div></div>
+  <div class="mcard"><div class="ml">Delta OPPs</div><div class="mv" id="d-opp">—</div><div class="ms">adicionais estimadas</div></div>
+  <div class="mcard"><div class="ml">Delta pipeline</div><div class="mv" id="d-pipe">—</div><div class="ms" id="d-pipe-s">—</div></div>
+</div>
+
+<div class="gap-lbl" id="gap-lbl">Cobertura da meta com a melhoria</div>
+<div class="gap-wrap"><div class="gap-fill" id="gap-fill" style="width:0%"></div></div>
+<div class="gap-foot"><span id="gf-left">—</span><span id="gf-right">—</span></div>
+<div class="gap-verdict" id="gap-verdict"></div>
+<div class="nota">Projeção = realizado ÷ dias decorridos × dias úteis do mês. Pipeline = OPPs × pipeline/OPP médio, usando taxas MQL→SQL e SQL→OPP do realizado como constantes.</div>
+
+</div>
+<script>
+let acao='cro';
+const acoes={
+  cro:{ctx:'CRO na LP atua na tx. de cadastro e qualidade dos MQLs. Principal alavanca para recuperar volume de LDM com o mesmo tráfego.',sliders:[{id:'s1',label:'Melhoria na tx. de cadastro (%)',min:1,max:100,step:1,val:25,unit:'%',tipo:'cad'},{id:'s2',label:'Melhoria adicional no volume de MQL (%)',min:0,max:50,step:1,val:10,unit:'%',tipo:'mql_extra'}]},
+  budget:{ctx:'Mais budget = mais impressões e cliques, mantendo as taxas atuais. Efeito cascata direto no volume de MQLs.',sliders:[{id:'s1',label:'Aumento de budget (%)',min:1,max:100,step:1,val:20,unit:'%',tipo:'budget'}]},
+  ctr:{ctx:'CTR atual 2,89% vs média H1 de 3,96%. Criativos e segmentação melhores geram mais cliques com o mesmo budget.',sliders:[{id:'s1',label:'Melhoria de CTR (%)',min:1,max:80,step:1,val:30,unit:'%',tipo:'ctr'}]},
+  cadastro:{ctx:'Tx. cadastro 1,57% vs meta 2,0%. CRO focado em header, CTA e form da LP converte mais visitantes sem precisar de mais tráfego.',sliders:[{id:'s1',label:'Melhoria na tx. de cadastro (%)',min:1,max:80,step:1,val:25,unit:'%',tipo:'cad'}]},
+  mqltx:{ctx:'Melhor fit de ICP na segmentação aumenta a taxa de elegibilidade — mais contatos qualificados chegam ao nível de LDM.',sliders:[{id:'s1',label:'Melhoria na tx. contato → MQL (%)',min:1,max:60,step:1,val:20,unit:'%',tipo:'mqltx'}]},
+};
+function gv(id){return parseFloat(document.getElementById(id)?.value)||0;}
+function fN(n){return Math.round(n).toLocaleString('pt-BR');}
+function fR(n){const s=n<0?'-':'';const a=Math.abs(n);return s+'R$ '+(a>=1000?(a/1000).toFixed(0)+'k':Math.round(a).toLocaleString('pt-BR'));}
+function clr(n,b){return n>b?'g':n<b?'r':'n';}
+function pj(r,dp,dt){return dp>0?Math.round(r/dp*dt):r;}
+
+function runSection2(){
+  const dp=gv('du-pass')||14,dt=gv('du-total')||20;
+  const items=[
+    {id:'budget',r:gv('r-budget'),m:gv('m-budget'),fmt:fR,isPct:false},
+    {id:'ctr',r:gv('r-ctr'),m:gv('m-ctr'),fmt:v=>v.toFixed(2)+'%',isPct:true},
+    {id:'cad',r:gv('r-cad'),m:gv('m-cad'),fmt:v=>v.toFixed(2)+'%',isPct:true},
+    {id:'mql',r:gv('r-mql'),m:gv('m-mql'),fmt:fN,isPct:false},
+    {id:'sql',r:gv('r-sql'),m:gv('m-sql'),fmt:fN,isPct:false},
+    {id:'opp',r:gv('r-opp'),m:gv('m-opp'),fmt:fN,isPct:false},
+    {id:'pipe',r:gv('r-pipe'),m:gv('m-pipe'),fmt:fR,isPct:false},
+  ];
+  items.forEach(({id,r,m,fmt,isPct})=>{
+    const aEl=document.getElementById('a-'+id);
+    const pEl=document.getElementById('p-'+id);
+    const bEl=document.getElementById('b-'+id);
+    if(!aEl) return;
+    const aPct=m>0?Math.round((r/m)*100):null;
+    if(aPct!==null){aEl.textContent=aPct+'%';aEl.className='ating-val '+(aPct>=90?'g':aPct>=70?'am':'r');}
+    if(pEl&&!isPct){const p=pj(r,dp,dt);pEl.textContent=fmt(p);if(m>0){const pp=Math.round((p/m)*100);pEl.className='proj-val '+(pp>=90?'g':pp>=70?'am':'r');}}
+    if(bEl&&m>0){const pct=Math.min(aPct||0,100);bEl.style.width=pct+'%';bEl.style.background=pct>=90?'#1D9E75':pct>=70?'#BA7517':'#E24B4A';}
+  });
+  const rPipe=gv('r-pipe'),mPipe=gv('m-pipe')||541000;
+  const projPipe=pj(rPipe,dp,dt);
+  const pct=Math.round((projPipe/mPipe)*100);
+  const gap=projPipe-mPipe;
+  document.getElementById('v-real').textContent=fR(rPipe);
+  document.getElementById('v-real-s').textContent=Math.round((rPipe/mPipe)*100)+'% da meta';
+  const vp=document.getElementById('v-proj');
+  vp.textContent=fR(projPipe);vp.className='vv '+(pct>=90?'g':pct>=70?'am':'r');
+  document.getElementById('v-proj-s').textContent=(gap>=0?'+':'')+fR(gap)+' vs meta';
+  const vv=document.getElementById('v-verdict'),vb=document.getElementById('v-badge');
+  if(pct>=100){vv.textContent='Sim';vv.className='vv g';vb.innerHTML='<span class="badge bg">No ritmo certo</span>';}
+  else if(pct>=85){vv.textContent='Risco';vv.className='vv am';vb.innerHTML='<span class="badge ba">Precisa acelerar</span>';}
+  else{vv.textContent='Não';vv.className='vv r';vb.innerHTML='<span class="badge br">Precisa de ação</span>';}
+}
+
+function getProj(){
+  const dp=gv('du-pass')||14,dt=gv('du-total')||20;
+  const mql=pj(gv('r-mql'),dp,dt);
+  const mqltx=(gv('r-mqltx')||53)/100;
+  const sqltx=(gv('r-sqltx')||81)/100;
+  const ppopp=gv('ppopp')||6900;
+  const sql=Math.round(mql*mqltx);
+  const opp=Math.round(sql*sqltx);
+  const pipe=opp*ppopp;
+  return{mql,sql,opp,pipe,mqltx,sqltx,ppopp};
+}
+
+function runSim(){
+  const base=getProj();
+  const vs=Array.from(document.querySelectorAll('#sim-sliders input[type=range]')).map(e=>parseFloat(e.value));
+  const cfg=acoes[acao];
+  let nMql=base.mql;
+  cfg.sliders.forEach((s,i)=>{
+    const v=vs[i]!==undefined?vs[i]:s.val;
+    if(s.tipo==='budget'||s.tipo==='ctr'||s.tipo==='cad') nMql=Math.round(base.mql*(1+v/100));
+    if(s.tipo==='mql_extra') nMql=Math.round(nMql*(1+v/100));
+    if(s.tipo==='mqltx') nMql=Math.round(base.mql*(1+v/100));
+  });
+  const nSql=Math.round(nMql*base.mqltx);
+  const nOpp=Math.round(nSql*base.sqltx);
+  const nPipe=nOpp*base.ppopp;
+  const meta=gv('m-pipe')||541000;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  const setC=(id,c)=>{const el=document.getElementById(id);if(el)el.className=c;};
+  set('bs-mql',fN(base.mql));set('bs-sql',fN(base.sql));set('bs-opp',fN(base.opp));set('bs-pipe',fR(base.pipe));
+  const pairs=[['mql',nMql,base.mql,fN],['sql',nSql,base.sql,fN],['opp',nOpp,base.opp,fN],['pipe',nPipe,base.pipe,fR]];
+  pairs.forEach(([k,n,b,f])=>{
+    const d=n-b;const el=document.getElementById('ns-'+k);if(!el) return;
+    el.textContent=f(n)+(d!==0?' ('+(d>0?'+':'')+f(Math.abs(d))+')':'');
+    el.className=clr(n,b);
+  });
+  const dm=nMql-base.mql;
+  set('d-mql',(dm>=0?'+':'')+fN(dm));setC('d-mql','mv '+(dm>0?'g':dm<0?'r':'n'));
+  set('d-mql-s',(dm>=0?'+':'')+((dm/Math.max(base.mql,1))*100).toFixed(1)+'% vs projeção');
+  const dop=nOpp-base.opp;
+  document.getElementById('d-opp').textContent=(dop>=0?'+':'')+fN(dop);
+  document.getElementById('d-opp').className='mv '+(dop>0?'g':dop<0?'r':'n');
+  const dp2=nPipe-base.pipe;
+  set('d-pipe',(dp2>=0?'+':'')+fR(dp2));setC('d-pipe','mv '+(dp2>0?'g':dp2<0?'r':'n'));
+  set('d-pipe-s',(dp2>=0?'+':'')+((dp2/Math.max(base.pipe,1))*100).toFixed(1)+'% vs projeção');
+  const cov=Math.min(Math.round((nPipe/Math.max(meta,1))*100),100);
+  const gapV=nPipe-meta;
+  set('gap-lbl','Cobertura da meta com a melhoria — '+cov+'%');
+  set('gf-left',fR(nPipe)+' estimado');set('gf-right',fR(meta)+' meta');
+  const bar=document.getElementById('gap-fill');
+  if(bar){bar.style.width=cov+'%';bar.style.background=cov>=100?'#1D9E75':cov>=70?'#BA7517':'#E24B4A';}
+  const gvEl=document.getElementById('gap-verdict');
+  if(gvEl){
+    if(gapV>=0) gvEl.innerHTML='<span class="badge bg">Esta melhoria fecha o gap com a meta</span>';
+    else gvEl.innerHTML='<span class="badge br">Ainda faltam '+fR(Math.abs(gapV))+' para a meta</span>';
+  }
+}
+
+function runAll(){runSection2();runSim();}
+
+function selAcao(el,id){
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');acao=id;
+  renderSliders();runSim();
+}
+
+function renderSliders(){
+  const cfg=acoes[acao];
+  document.getElementById('ctx-box').textContent=cfg.ctx;
+  document.getElementById('sim-sliders').innerHTML=cfg.sliders.map(s=>`
+    <div class="sw">
+      <div class="sh"><span class="sl">${s.label}</span><span class="sv" id="sv-${s.id}">${s.val>0&&s.unit==='%'?'+':''}${s.val}${s.unit}</span></div>
+      <input type="range" min="${s.min}" max="${s.max}" step="${s.step}" value="${s.val}"
+        oninput="document.getElementById('sv-${s.id}').innerText=(this.value>0&&'${s.unit}'==='%'?'+':'')+this.value+'${s.unit}';runSim()">
+    </div>`).join('');
+}
+
+window.onload=()=>{renderSliders();runAll();};
+</script>
+</body>
+</html>
