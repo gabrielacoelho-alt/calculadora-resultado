@@ -26,6 +26,14 @@ h1{font-size:20px;font-weight:500;color:#1a1a1a;margin-bottom:.25rem}
 .kpi-card .kpi-sub{font-size:10px;color:#aaa;margin-bottom:.75rem}
 .kpi-card input{width:100%;font-size:15px;font-weight:500;padding:8px 10px;border:1px solid #e8e8e4;border-radius:8px;background:#f9f9f7;color:#1a1a1a;text-align:right}
 .kpi-card input:focus{outline:none;border-color:#1a1a1a;background:#fff}
+.funil-visual{background:#fff;border:1px solid #e8e8e4;border-radius:12px;padding:1rem 1.25rem;margin-bottom:1.5rem}
+.funil-visual .fv-title{font-size:11px;font-weight:500;color:#888;margin-bottom:.75rem;text-transform:uppercase;letter-spacing:.04em}
+.funil-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:12px}
+.funil-box{background:#f9f9f7;border-radius:6px;padding:6px 10px;min-width:110px}
+.funil-box .fb-label{font-size:10px;color:#aaa}
+.funil-box .fb-val{font-size:14px;font-weight:500;color:#1a1a1a}
+.funil-arrow{color:#ccc;font-size:12px}
+.funil-rate{font-size:11px;color:#888;background:#f0f0ec;border-radius:4px;padding:2px 7px}
 .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:1.5rem}
 @media(max-width:600px){.result-grid{grid-template-columns:1fr 1fr}}
 .rcard{border:1px solid #e8e8e4;border-radius:12px;padding:1rem;background:#fff}
@@ -83,7 +91,7 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
 .gap-foot{display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:1rem}
 .gap-verdict{margin-bottom:1.5rem}
 .nota{font-size:11px;color:#aaa;padding:8px 12px;background:#f9f9f7;border-radius:8px;margin-bottom:1rem;border:1px solid #e8e8e4;line-height:1.6}
-.projecao-nota{font-size:11px;color:#aaa;background:#f9f9f7;border-radius:8px;padding:8px 12px;margin-bottom:1.5rem;border:1px solid #e8e8e4;line-height:1.6}
+.section-sep{font-size:11px;font-weight:500;color:#aaa;text-transform:uppercase;letter-spacing:.05em;margin:1.25rem 0 .75rem;padding-bottom:4px;border-bottom:1px solid #f0f0ec}
 </style>
 </head>
 <body>
@@ -93,40 +101,50 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
 <p class="subtitle">Levantada de Mão — meta, realizado e simulação de melhorias</p>
 
 <div class="top-row">
-  <div class="field"><label>Mês vigente</label><input type="text" id="mes" value="Abril / 26" oninput="runAll()"></div>
-  <div class="field"><label>Dias úteis do mês</label><input type="number" id="du-total" value="20" oninput="runAll()"></div>
-  <div class="field"><label>Dias úteis decorridos</label><input type="number" id="du-pass" value="14" oninput="runAll()"></div>
-  <div class="field"><label>Pipeline / OPP médio (R$)</label><input type="number" id="ppopp" value="6900" oninput="runAll()"></div>
+  <div class="field"><label>Mês vigente</label><input type="text" id="mes" value="" placeholder="ex: Maio / 26" oninput="runAll()"></div>
+  <div class="field"><label>Dias úteis do mês</label><input type="number" id="du-total" value="" placeholder="ex: 21" oninput="runAll()"></div>
+  <div class="field"><label>Dias úteis decorridos</label><input type="number" id="du-pass" value="" placeholder="ex: 10" oninput="runAll()"></div>
+  <div class="field"><label>Pipeline / OPP médio (R$)</label><input type="number" id="ppopp" value="" placeholder="ex: 6900" oninput="runAll()"></div>
 </div>
 
 <!-- SEÇÃO 1 -->
 <div class="sec-title">Seção 1 — Meta do mês</div>
 <div class="sec-desc">Insira a meta de cada KPI para o mês vigente.</div>
+
+<div class="section-sep">Topo de funil — mídia</div>
 <div class="kpi-grid">
   <div class="kpi-card"><div class="kpi-name">Budget</div><div class="kpi-sub">investimento total do mês (R$)</div><label>Meta</label><input type="number" id="m-budget" value="" placeholder="ex: 176928" oninput="runAll()"></div>
   <div class="kpi-card"><div class="kpi-name">CTR médio</div><div class="kpi-sub">cliques / impressões (%)</div><label>Meta</label><input type="number" id="m-ctr" value="" step="0.01" placeholder="ex: 3.96" oninput="runAll()"></div>
-  <div class="kpi-card"><div class="kpi-name">Tx. cadastro</div><div class="kpi-sub">pageview → contato qualificado (%)</div><label>Meta</label><input type="number" id="m-cad" value="" step="0.01" placeholder="ex: 2.0" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">Tx. cadastro</div><div class="kpi-sub">clique → contato qualificado (%)</div><label>Meta</label><input type="number" id="m-cad" value="" step="0.01" placeholder="ex: 2.0" oninput="runAll()"></div>
+</div>
+
+<div class="section-sep">Meio de funil — qualificação</div>
+<div class="kpi-grid">
+  <div class="kpi-card"><div class="kpi-name">Tx. elegibilidade</div><div class="kpi-sub">contato qualificado → MQL (%)</div><label>Meta</label><input type="number" id="m-eleg" value="" step="0.01" placeholder="ex: 1.79" oninput="runAll()"></div>
   <div class="kpi-card"><div class="kpi-name">MQL (LDM)</div><div class="kpi-sub">levantadas de mão</div><label>Meta</label><input type="number" id="m-mql" value="" placeholder="ex: 261" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">Tx. MQL→SQL</div><div class="kpi-sub">MQL qualificado por vendas (%)</div><label>Meta</label><input type="number" id="m-mqltx" value="" placeholder="ex: 53" oninput="runAll()"></div>
+</div>
+
+<div class="section-sep">Fundo de funil — vendas</div>
+<div class="kpi-grid">
   <div class="kpi-card"><div class="kpi-name">SQL</div><div class="kpi-sub">qualificados por vendas</div><label>Meta</label><input type="number" id="m-sql" value="" placeholder="ex: 130" oninput="runAll()"></div>
   <div class="kpi-card"><div class="kpi-name">OPP</div><div class="kpi-sub">oportunidades abertas</div><label>Meta</label><input type="number" id="m-opp" value="" placeholder="ex: 122" oninput="runAll()"></div>
-  <div class="kpi-card" style="grid-column:1/-1"><div class="kpi-name">Pipeline</div><div class="kpi-sub">valor total de oportunidades (R$)</div><label>Meta</label><input type="number" id="m-pipe" value="" placeholder="ex: 541000" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">Pipeline</div><div class="kpi-sub">valor total de oportunidades (R$)</div><label>Meta</label><input type="number" id="m-pipe" value="" placeholder="ex: 541000" oninput="runAll()"></div>
 </div>
 
 <div class="divider"></div>
 
 <!-- SEÇÃO 2 -->
 <div class="sec-title">Seção 2 — Realizado do mês</div>
-<div class="sec-desc">Insira o realizado até hoje. A calculadora projeta o fechamento usando o mesmo racional da planilha Hunter: realizado + ritmo diário × dias restantes.</div>
+<div class="sec-desc">Insira o realizado até hoje. Projeção = realizado + (ritmo diário × dias restantes) — mesmo racional da planilha Hunter.</div>
 
-<div class="projecao-nota" id="projecao-nota">Projeção = realizado até hoje + (realizado ÷ dias decorridos × dias restantes). Dias restantes: <strong id="dias-restantes">—</strong> dias úteis.</div>
-
+<div class="section-sep">Topo de funil — mídia</div>
 <div class="result-grid">
   <div class="rcard">
     <div class="rname">Budget</div><div class="rsub">R$ consumido até hoje</div>
     <input type="number" id="r-budget" value="" placeholder="ex: 152788" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-budget">—</span></div>
-    <div class="proj-block">
-      <div class="proj-title">Projeção de fechamento</div>
+    <div class="proj-block"><div class="proj-title">Projeção de fechamento</div>
       <div class="proj-row-inner"><span class="proj-lbl">Valor</span><span class="proj-val" id="p-budget">—</span></div>
       <div class="proj-row-inner"><span class="proj-lbl">% da meta</span><span class="proj-val" id="pp-budget">—</span></div>
     </div>
@@ -136,74 +154,75 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
     <div class="rname">CTR médio</div><div class="rsub">% atual</div>
     <input type="number" id="r-ctr" value="" step="0.01" placeholder="ex: 2.89" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-ctr">—</span></div>
-    <div class="proj-block">
-      <div class="proj-title">Referência</div>
-      <div class="proj-row-inner"><span class="proj-lbl">Média H1</span><span class="proj-val">3,96%</span></div>
-      <div class="proj-row-inner"><span class="proj-lbl">Mín. histórico</span><span class="proj-val">2,89%</span></div>
+    <div class="proj-block"><div class="proj-title">Referência histórica</div>
+      <div class="proj-row-inner"><span class="proj-lbl">Média H1/26</span><span class="proj-val">3,96%</span></div>
+      <div class="proj-row-inner"><span class="proj-lbl">Abr/26</span><span class="proj-val">2,89%</span></div>
     </div>
     <div class="mini-bar"><div class="mini-fill" id="b-ctr"></div></div>
   </div>
   <div class="rcard">
-    <div class="rname">Tx. cadastro</div><div class="rsub">pageview → contato qual. (%)</div>
+    <div class="rname">Tx. cadastro</div><div class="rsub">clique → contato qual. (%)</div>
     <input type="number" id="r-cad" value="" step="0.01" placeholder="ex: 1.57" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-cad">—</span></div>
-    <div class="proj-block">
-      <div class="proj-title">Referência</div>
-      <div class="proj-row-inner"><span class="proj-lbl">Média H1</span><span class="proj-val">1,87%</span></div>
-      <div class="proj-row-inner"><span class="proj-lbl">Mín. histórico</span><span class="proj-val">1,57%</span></div>
+    <div class="proj-block"><div class="proj-title">Referência histórica</div>
+      <div class="proj-row-inner"><span class="proj-lbl">Média H1/26</span><span class="proj-val">1,87%</span></div>
+      <div class="proj-row-inner"><span class="proj-lbl">Abr/26</span><span class="proj-val">1,57%</span></div>
     </div>
     <div class="mini-bar"><div class="mini-fill" id="b-cad"></div></div>
+  </div>
+</div>
+
+<div class="section-sep">Meio de funil — qualificação</div>
+<div class="result-grid">
+  <div class="rcard">
+    <div class="rname">Tx. elegibilidade</div><div class="rsub">contato qualificado → MQL (%)</div>
+    <input type="number" id="r-eleg" value="" step="0.01" placeholder="ex: 1.79" oninput="runAll()">
+    <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-eleg">—</span></div>
+    <div class="proj-block"><div class="proj-title">Referência histórica</div>
+      <div class="proj-row-inner"><span class="proj-lbl">Média H1/26</span><span class="proj-val">1,38%</span></div>
+      <div class="proj-row-inner"><span class="proj-lbl">Abr/26</span><span class="proj-val">1,79%</span></div>
+    </div>
+    <div class="mini-bar"><div class="mini-fill" id="b-eleg"></div></div>
   </div>
   <div class="rcard">
     <div class="rname">MQL (LDM)</div><div class="rsub">levantadas de mão até hoje</div>
     <input type="number" id="r-mql" value="" placeholder="ex: 120" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-mql">—</span></div>
-    <div class="proj-block">
-      <div class="proj-title">Projeção de fechamento</div>
+    <div class="proj-block"><div class="proj-title">Projeção de fechamento</div>
       <div class="proj-row-inner"><span class="proj-lbl">Valor</span><span class="proj-val" id="p-mql">—</span></div>
       <div class="proj-row-inner"><span class="proj-lbl">% da meta</span><span class="proj-val" id="pp-mql">—</span></div>
     </div>
     <div class="mini-bar"><div class="mini-fill" id="b-mql"></div></div>
   </div>
   <div class="rcard">
-    <div class="rname">Tx. MQL→SQL</div><div class="rsub">% de conversão atual</div>
+    <div class="rname">Tx. MQL→SQL</div><div class="rsub">MQL qualificado por vendas (%)</div>
     <input type="number" id="r-mqltx" value="" placeholder="ex: 53" oninput="runAll()">
-    <div class="stat-row"><span class="stat-lbl">Referência</span><span class="stat-val n">histórico</span></div>
-    <div class="proj-block">
-      <div class="proj-title">Referência</div>
-      <div class="proj-row-inner"><span class="proj-lbl">Abr/26</span><span class="proj-val">53%</span></div>
+    <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-mqltx">—</span></div>
+    <div class="proj-block"><div class="proj-title">Referência histórica</div>
       <div class="proj-row-inner"><span class="proj-lbl">Q1/26</span><span class="proj-val">29%</span></div>
+      <div class="proj-row-inner"><span class="proj-lbl">Abr/26</span><span class="proj-val">53%</span></div>
     </div>
     <div class="mini-bar"><div class="mini-fill" id="b-mqltx"></div></div>
   </div>
+</div>
+
+<div class="section-sep">Fundo de funil — vendas</div>
+<div class="result-grid">
   <div class="rcard">
     <div class="rname">SQL</div><div class="rsub">qualificados por vendas até hoje</div>
     <input type="number" id="r-sql" value="" placeholder="ex: 69" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-sql">—</span></div>
-    <div class="proj-block">
-      <div class="proj-title">Projeção de fechamento</div>
+    <div class="proj-block"><div class="proj-title">Projeção de fechamento</div>
       <div class="proj-row-inner"><span class="proj-lbl">Valor</span><span class="proj-val" id="p-sql">—</span></div>
       <div class="proj-row-inner"><span class="proj-lbl">% da meta</span><span class="proj-val" id="pp-sql">—</span></div>
     </div>
     <div class="mini-bar"><div class="mini-fill" id="b-sql"></div></div>
   </div>
   <div class="rcard">
-    <div class="rname">Tx. SQL→OPP</div><div class="rsub">% de conversão atual</div>
-    <input type="number" id="r-sqltx" value="" placeholder="ex: 81" oninput="runAll()">
-    <div class="stat-row"><span class="stat-lbl">Referência</span><span class="stat-val n">histórico</span></div>
-    <div class="proj-block">
-      <div class="proj-title">Referência</div>
-      <div class="proj-row-inner"><span class="proj-lbl">Abr/26</span><span class="proj-val">81%</span></div>
-      <div class="proj-row-inner"><span class="proj-lbl">Q1/26</span><span class="proj-val">87%</span></div>
-    </div>
-    <div class="mini-bar"><div class="mini-fill" id="b-sqltx"></div></div>
-  </div>
-  <div class="rcard">
     <div class="rname">OPP</div><div class="rsub">oportunidades abertas até hoje</div>
     <input type="number" id="r-opp" value="" placeholder="ex: 56" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-opp">—</span></div>
-    <div class="proj-block">
-      <div class="proj-title">Projeção de fechamento</div>
+    <div class="proj-block"><div class="proj-title">Projeção de fechamento</div>
       <div class="proj-row-inner"><span class="proj-lbl">Valor</span><span class="proj-val" id="p-opp">—</span></div>
       <div class="proj-row-inner"><span class="proj-lbl">% da meta</span><span class="proj-val" id="pp-opp">—</span></div>
     </div>
@@ -213,8 +232,7 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
     <div class="rname">Pipeline</div><div class="rsub">valor gerado até hoje (R$)</div>
     <input type="number" id="r-pipe" value="" placeholder="ex: 268000" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-pipe">—</span></div>
-    <div class="proj-block">
-      <div class="proj-title">Projeção de fechamento</div>
+    <div class="proj-block"><div class="proj-title">Projeção de fechamento</div>
       <div class="proj-row-inner"><span class="proj-lbl">Valor</span><span class="proj-val" id="p-pipe">—</span></div>
       <div class="proj-row-inner"><span class="proj-lbl">% da meta</span><span class="proj-val" id="pp-pipe">—</span></div>
     </div>
@@ -232,14 +250,14 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
 
 <!-- SEÇÃO 3 -->
 <div class="sec-title">Seção 3 — Simular melhoria</div>
-<div class="sec-desc">Escolha uma alavanca e ajuste a intensidade. O impacto é calculado sobre a projeção de fechamento do mês.</div>
+<div class="sec-desc">Escolha uma alavanca de marketing e ajuste a intensidade. O impacto é calculado sobre a projeção de fechamento do mês.</div>
 
 <div class="pill-group">
   <span class="pill active" onclick="selAcao(this,'cro')">CRO na LP</span>
   <span class="pill" onclick="selAcao(this,'budget')">Budget</span>
   <span class="pill" onclick="selAcao(this,'ctr')">CTR</span>
   <span class="pill" onclick="selAcao(this,'cadastro')">Tx. cadastro</span>
-  <span class="pill" onclick="selAcao(this,'mqltx')">Contato → MQL</span>
+  <span class="pill" onclick="selAcao(this,'eleg')">Tx. elegibilidade</span>
 </div>
 <div class="ctx" id="ctx-box"></div>
 <div id="sim-sliders"></div>
@@ -273,9 +291,9 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
 <div class="gap-verdict" id="gap-verdict"></div>
 
 <div class="nota">
-  <strong>Projeção (racional Hunter):</strong> realizado até hoje + (ritmo diário atual × dias úteis restantes).<br>
-  <strong>Pipeline estimado:</strong> OPPs × pipeline/OPP médio, usando Tx. MQL→SQL e Tx. SQL→OPP do realizado como constantes.<br>
-  <strong>Simulação:</strong> aplicada sobre a projeção de fechamento — representa o impacto se a melhoria valer para os dias restantes do mês.
+  <strong>Funil completo:</strong> Budget → Cliques (CTR) → Contatos qualificados (Tx. cadastro) → MQL/LDM (Tx. elegibilidade) → SQL (Tx. MQL→SQL) → OPP (Tx. SQL→OPP) → Pipeline.<br>
+  <strong>Projeção (racional Hunter):</strong> realizado + (ritmo diário × dias restantes).<br>
+  <strong>Simulação:</strong> aplicada sobre a projeção — representa o impacto se a melhoria valer para os dias restantes do mês.
 </div>
 
 </div>
@@ -284,34 +302,34 @@ let acao='cro';
 
 const acoes={
   cro:{
-    ctx:'CRO na LP atua na tx. de cadastro e qualidade dos MQLs. Principal alavanca para recuperar volume de LDM com o mesmo tráfego.',
+    ctx:'CRO na LP melhora a tx. de cadastro (mais cliques viram contatos) e a tx. de elegibilidade (mais contatos viram MQL). Principal alavanca para recuperar volume de LDM.',
     sliders:[
-      {id:'s1',label:'Melhoria na tx. de cadastro (%)',min:1,max:100,step:1,val:25,unit:'%',tipo:'cad'},
-      {id:'s2',label:'Melhoria adicional no volume de MQL (%)',min:0,max:50,step:1,val:10,unit:'%',tipo:'mql_extra'},
+      {id:'s1',label:'Melhoria na tx. de cadastro (%)',min:1,max:100,step:1,val:20,unit:'%',tipo:'cad'},
+      {id:'s2',label:'Melhoria na tx. de elegibilidade (%)',min:0,max:80,step:1,val:15,unit:'%',tipo:'eleg'},
     ]
   },
   budget:{
-    ctx:'Mais budget = mais impressões e cliques, mantendo as taxas atuais. Efeito cascata direto no volume de MQLs.',
+    ctx:'Mais budget gera mais cliques e, em cascata, mais contatos e MQLs — mantendo as taxas de conversão atuais.',
     sliders:[
       {id:'s1',label:'Aumento de budget (%)',min:1,max:100,step:1,val:20,unit:'%',tipo:'budget',showAbs:true},
     ]
   },
   ctr:{
-    ctx:'CTR atual abaixo da média H1. Criativos e segmentação melhores geram mais cliques com o mesmo budget.',
+    ctx:'CTR mede a qualidade dos criativos e da segmentação. Mais cliques com o mesmo budget sem mexer nas taxas de conversão.',
     sliders:[
-      {id:'s1',label:'Melhoria de CTR (%)',min:1,max:80,step:1,val:30,unit:'%',tipo:'ctr'},
+      {id:'s1',label:'Melhoria de CTR (%)',min:1,max:80,step:1,val:30,unit:'%',tipo:'ctr',showAbs:true},
     ]
   },
   cadastro:{
-    ctx:'CRO focado em header, CTA e form da LP converte mais visitantes em contatos qualificados sem precisar de mais tráfego.',
+    ctx:'Tx. cadastro = clique → contato qualificado. CRO focado em header, CTA e form da LP converte mais visitantes sem precisar de mais tráfego.',
     sliders:[
-      {id:'s1',label:'Melhoria na tx. de cadastro (%)',min:1,max:80,step:1,val:25,unit:'%',tipo:'cad'},
+      {id:'s1',label:'Melhoria na tx. de cadastro (%)',min:1,max:80,step:1,val:25,unit:'%',tipo:'cad',showAbs:true},
     ]
   },
-  mqltx:{
-    ctx:'Melhor fit de ICP na segmentação aumenta a taxa de elegibilidade — mais contatos qualificados chegam ao nível de LDM.',
+  eleg:{
+    ctx:'Tx. elegibilidade = contato qualificado → MQL/LDM. Melhora com qualidade de audiência (fit de ICP) e segmentação mais precisa nas campanhas.',
     sliders:[
-      {id:'s1',label:'Melhoria na tx. contato → MQL (%)',min:1,max:60,step:1,val:20,unit:'%',tipo:'mqltx'},
+      {id:'s1',label:'Melhoria na tx. de elegibilidade (%)',min:1,max:80,step:1,val:20,unit:'%',tipo:'eleg',showAbs:true},
     ]
   },
 };
@@ -322,97 +340,72 @@ function fR(n){const s=n<0?'-':'';const a=Math.abs(n);return s+'R$\u00a0'+(a>=10
 function fRfull(n){const s=n<0?'-':'';const a=Math.abs(n);return s+'R$\u00a0'+Math.round(a).toLocaleString('pt-BR');}
 function clr(n,b){return n>b?'g':n<b?'r':'n';}
 
-// Racional Hunter: realizado + (ritmo_diario * dias_restantes)
 function projHunter(real,dp,dt){
   if(!dp||dp<=0) return real;
   const restantes=Math.max(dt-dp,0);
-  const ritmo=real/dp;
-  return Math.round(real+ritmo*restantes);
-}
-
-function getDiasRestantes(){
-  const dp=gv('du-pass')||0;
-  const dt=gv('du-total')||20;
-  return Math.max(dt-dp,0);
+  return Math.round(real+(real/dp)*restantes);
 }
 
 function runSection2(){
   const dp=gv('du-pass')||0;
-  const dt=gv('du-total')||20;
-  const restantes=getDiasRestantes();
-
-  // atualiza nota
-  const drEl=document.getElementById('dias-restantes');
-  if(drEl) drEl.textContent=restantes;
+  const dt=gv('du-total')||0;
 
   const items=[
-    {id:'budget', r:gv('r-budget'), m:gv('m-budget'), fmt:fR,    isPct:false},
-    {id:'ctr',    r:gv('r-ctr'),    m:gv('m-ctr'),    fmt:v=>parseFloat(v).toFixed(2)+'%', isPct:true},
-    {id:'cad',    r:gv('r-cad'),    m:gv('m-cad'),    fmt:v=>parseFloat(v).toFixed(2)+'%', isPct:true},
-    {id:'mql',    r:gv('r-mql'),    m:gv('m-mql'),    fmt:fN,    isPct:false},
-    {id:'sql',    r:gv('r-sql'),    m:gv('m-sql'),    fmt:fN,    isPct:false},
-    {id:'opp',    r:gv('r-opp'),    m:gv('m-opp'),    fmt:fN,    isPct:false},
-    {id:'pipe',   r:gv('r-pipe'),   m:gv('m-pipe'),   fmt:fR,    isPct:false},
+    {id:'budget', r:gv('r-budget'), m:gv('m-budget'), isPct:false, fmt:fR},
+    {id:'ctr',    r:gv('r-ctr'),    m:gv('m-ctr'),    isPct:true,  fmt:v=>parseFloat(v).toFixed(2)+'%'},
+    {id:'cad',    r:gv('r-cad'),    m:gv('m-cad'),    isPct:true,  fmt:v=>parseFloat(v).toFixed(2)+'%'},
+    {id:'eleg',   r:gv('r-eleg'),   m:gv('m-eleg'),   isPct:true,  fmt:v=>parseFloat(v).toFixed(2)+'%'},
+    {id:'mql',    r:gv('r-mql'),    m:gv('m-mql'),    isPct:false, fmt:fN},
+    {id:'mqltx',  r:gv('r-mqltx'), m:gv('m-mqltx'),  isPct:true,  fmt:v=>parseFloat(v).toFixed(1)+'%'},
+    {id:'sql',    r:gv('r-sql'),    m:gv('m-sql'),    isPct:false, fmt:fN},
+    {id:'opp',    r:gv('r-opp'),    m:gv('m-opp'),    isPct:false, fmt:fN},
+    {id:'pipe',   r:gv('r-pipe'),   m:gv('m-pipe'),   isPct:false, fmt:fR},
   ];
 
-  items.forEach(({id,r,m,fmt,isPct})=>{
+  items.forEach(({id,r,m,isPct,fmt})=>{
     const aEl=document.getElementById('a-'+id);
     const pEl=document.getElementById('p-'+id);
     const ppEl=document.getElementById('pp-'+id);
     const bEl=document.getElementById('b-'+id);
     if(!aEl) return;
 
-    // atingido atual
     const aPct=m>0?Math.round((r/m)*100):null;
     if(aPct!==null){
       aEl.textContent=aPct+'%';
       aEl.className='stat-val '+(aPct>=90?'g':aPct>=70?'am':'r');
-    } else {
-      aEl.textContent='—';
-    }
+    } else { aEl.textContent='—'; aEl.className='stat-val n'; }
 
-    // projeção (apenas para volumétricos, não taxas)
-    if(!isPct&&pEl&&ppEl){
+    if(!isPct&&pEl&&ppEl&&dp>0&&dt>0){
       const p=projHunter(r,dp,dt);
       pEl.textContent=fmt(p);
       if(m>0){
         const pPct=Math.round((p/m)*100);
         ppEl.textContent=pPct+'%';
         ppEl.className='proj-val '+(pPct>=90?'g':pPct>=70?'am':'r');
-      } else {
-        ppEl.textContent='—';
-      }
+      } else { ppEl.textContent='—'; }
     }
 
-    // barra
     if(bEl&&m>0&&aPct!==null){
-      const pct=Math.min(aPct,100);
-      bEl.style.width=pct+'%';
-      bEl.style.background=pct>=90?'#1D9E75':pct>=70?'#BA7517':'#E24B4A';
+      bEl.style.width=Math.min(aPct,100)+'%';
+      bEl.style.background=aPct>=90?'#1D9E75':aPct>=70?'#BA7517':'#E24B4A';
     }
   });
 
-  // veredicto de pipeline
+  // veredicto pipeline
   const rPipe=gv('r-pipe'), mPipe=gv('m-pipe')||0;
-  const projPipe=projHunter(rPipe,dp,dt);
+  const projPipe=dp>0&&dt>0?projHunter(rPipe,dp,dt):rPipe;
   const pct=mPipe>0?Math.round((projPipe/mPipe)*100):null;
   const gap=projPipe-mPipe;
 
   const vrEl=document.getElementById('v-real');
-  if(vrEl){vrEl.textContent=mPipe>0?fR(rPipe):'—';}
+  if(vrEl) vrEl.textContent=rPipe>0?fR(rPipe):'—';
   const vrsEl=document.getElementById('v-real-s');
-  if(vrsEl){vrsEl.textContent=mPipe>0&&rPipe>0?Math.round((rPipe/mPipe)*100)+'% da meta':'preencha a meta';}
+  if(vrsEl) vrsEl.textContent=mPipe>0&&rPipe>0?Math.round((rPipe/mPipe)*100)+'% da meta':'preencha meta e realizado';
 
   const vpEl=document.getElementById('v-proj');
-  if(vpEl){
-    vpEl.textContent=projPipe>0?fR(projPipe):'—';
-    vpEl.className='vv '+(pct>=90?'g':pct>=70?'am':'r');
-  }
+  if(vpEl){vpEl.textContent=projPipe>0?fR(projPipe):'—';vpEl.className='vv '+(pct>=90?'g':pct>=70?'am':'r');}
   const vpsEl=document.getElementById('v-proj-s');
-  if(vpsEl){
-    if(pct!==null&&projPipe>0) vpsEl.textContent=pct+'% da meta · '+(gap>=0?'+':'')+fR(gap);
-    else vpsEl.textContent='preencha meta e realizado';
-  }
+  if(vpsEl) vpsEl.textContent=pct!==null&&projPipe>0?pct+'% da meta · '+(gap>=0?'+':'')+fR(gap):'preencha meta e realizado';
 
   const vvEl=document.getElementById('v-verdict');
   const vbEl=document.getElementById('v-badge');
@@ -420,22 +413,21 @@ function runSection2(){
     if(pct>=100){vvEl.textContent='Sim';vvEl.className='vv g';vbEl.innerHTML='<span class="badge bg">No ritmo certo</span>';}
     else if(pct>=85){vvEl.textContent='Risco';vvEl.className='vv am';vbEl.innerHTML='<span class="badge ba">Precisa acelerar</span>';}
     else{vvEl.textContent='Não';vvEl.className='vv r';vbEl.innerHTML='<span class="badge br">Precisa de ação</span>';}
-  } else if(vvEl){
-    vvEl.textContent='—';
-  }
+  } else if(vvEl){vvEl.textContent='—';}
 }
 
 function getProj(){
-  const dp=gv('du-pass')||0;
-  const dt=gv('du-total')||20;
-  const mql=projHunter(gv('r-mql'),dp,dt);
-  const mqltx=(gv('r-mqltx')||53)/100;
-  const sqltx=(gv('r-sqltx')||81)/100;
-  const ppopp=gv('ppopp')||6900;
-  const sql=Math.round(mql*mqltx);
-  const opp=Math.round(sql*sqltx);
-  const pipe=opp*ppopp;
-  return{mql,sql,opp,pipe,mqltx,sqltx,ppopp};
+  const dp=gv('du-pass')||0, dt=gv('du-total')||0;
+  const mql  = dp>0&&dt>0 ? projHunter(gv('r-mql'),dp,dt) : gv('r-mql');
+  const mqltx = (gv('r-mqltx')||53)/100;
+  const sqltx = (gv('r-sqltx')||81)/100;  // usamos SQL→OPP do realizado como constante
+  const eleg  = (gv('r-eleg')||1.79)/100;
+  const cad   = (gv('r-cad')||1.57)/100;
+  const ppopp = gv('ppopp')||6900;
+  const sql   = Math.round(mql*mqltx);
+  const opp   = Math.round(sql*sqltx);
+  const pipe  = opp*ppopp;
+  return{mql,sql,opp,pipe,mqltx,sqltx,eleg,cad,ppopp};
 }
 
 function runSim(){
@@ -446,10 +438,16 @@ function runSim(){
 
   cfg.sliders.forEach((s,i)=>{
     const v=vs[i]!==undefined?vs[i]:s.val;
-    if(s.tipo==='budget'||s.tipo==='ctr'||s.tipo==='cad') nMql=Math.round(base.mql*(1+v/100));
-    if(s.tipo==='mql_extra') nMql=Math.round(nMql*(1+v/100));
-    if(s.tipo==='mqltx') nMql=Math.round(base.mql*(1+v/100));
+    if(s.tipo==='budget') nMql=Math.round(base.mql*(1+v/100));
+    if(s.tipo==='ctr')    nMql=Math.round(base.mql*(1+v/100));
+    if(s.tipo==='cad')    nMql=Math.round(base.mql*(1+v/100));
+    if(s.tipo==='eleg')   nMql=Math.round(base.mql*(1+v/100));
   });
+  // CRO aplica cadastro E elegibilidade em cascata
+  if(acao==='cro'&&vs.length>=2){
+    const vCad=vs[0]||0, vEleg=vs[1]||0;
+    nMql=Math.round(base.mql*(1+vCad/100)*(1+vEleg/100));
+  }
 
   const nSql=Math.round(nMql*base.mqltx);
   const nOpp=Math.round(nSql*base.sqltx);
@@ -461,16 +459,14 @@ function runSim(){
 
   set('bs-mql',fN(base.mql));set('bs-sql',fN(base.sql));set('bs-opp',fN(base.opp));set('bs-pipe',fR(base.pipe));
 
-  const pairs=[['mql',nMql,base.mql,fN],['sql',nSql,base.sql,fN],['opp',nOpp,base.opp,fN],['pipe',nPipe,base.pipe,fR]];
-  pairs.forEach(([k,n,b,f])=>{
-    const d=n-b;const el=document.getElementById('ns-'+k);if(!el) return;
+  [['mql',nMql,base.mql,fN],['sql',nSql,base.sql,fN],['opp',nOpp,base.opp,fN],['pipe',nPipe,base.pipe,fR]].forEach(([k,n,b,f])=>{
+    const d=n-b;const el=document.getElementById('ns-'+k);if(!el)return;
     el.textContent=f(n)+(d!==0?' ('+(d>0?'+':'')+f(Math.abs(d))+')':'');
     el.className=clr(n,b);
   });
 
   const dm=nMql-base.mql;
-  set('d-mql',(dm>=0?'+':'')+fN(dm));
-  setC('d-mql','mv '+(dm>0?'g':dm<0?'r':'n'));
+  set('d-mql',(dm>=0?'+':'')+fN(dm));setC('d-mql','mv '+(dm>0?'g':dm<0?'r':'n'));
   set('d-mql-s',(dm>=0?'+':'')+((dm/Math.max(base.mql,1))*100).toFixed(1)+'% vs projeção');
 
   const dop=nOpp-base.opp;
@@ -478,15 +474,14 @@ function runSim(){
   if(dopEl){dopEl.textContent=(dop>=0?'+':'')+fN(dop);dopEl.className='mv '+(dop>0?'g':dop<0?'r':'n');}
 
   const dp2=nPipe-base.pipe;
-  set('d-pipe',(dp2>=0?'+':'')+fR(dp2));
-  setC('d-pipe','mv '+(dp2>0?'g':dp2<0?'r':'n'));
+  set('d-pipe',(dp2>=0?'+':'')+fR(dp2));setC('d-pipe','mv '+(dp2>0?'g':dp2<0?'r':'n'));
   set('d-pipe-s',(dp2>=0?'+':'')+((dp2/Math.max(base.pipe,1))*100).toFixed(1)+'% vs projeção');
 
   const cov=meta>0?Math.min(Math.round((nPipe/meta)*100),100):0;
   const gapV=nPipe-meta;
   set('gap-lbl','Cobertura da meta com a melhoria'+(meta>0?' — '+cov+'%':''));
   set('gf-left',fR(nPipe)+' estimado com melhoria');
-  set('gf-right',meta>0?fR(meta)+' meta':'defina a meta');
+  set('gf-right',meta>0?fR(meta)+' meta':'defina a meta na seção 1');
   const bar=document.getElementById('gap-fill');
   if(bar){bar.style.width=cov+'%';bar.style.background=cov>=100?'#1D9E75':cov>=70?'#BA7517':'#E24B4A';}
   const gvEl=document.getElementById('gap-verdict');
@@ -494,8 +489,6 @@ function runSim(){
     if(gapV>=0) gvEl.innerHTML='<span class="badge bg">Esta melhoria fecha o gap com a meta</span>';
     else gvEl.innerHTML='<span class="badge br">Ainda faltam '+fR(Math.abs(gapV))+' para a meta</span>';
   }
-
-  // atualiza valores absolutos nos sliders
   updateSliderAbs();
 }
 
@@ -506,25 +499,10 @@ function updateSliderAbs(){
     const v=vs[i]!==undefined?vs[i]:s.val;
     const absEl=document.getElementById('sv-abs-'+s.id);
     if(!absEl) return;
-    if(s.tipo==='budget'){
-      const base=gv('r-budget')||0;
-      const novo=Math.round(base*(1+v/100));
-      absEl.textContent=base>0?fRfull(base)+' → '+fRfull(novo):'';
-    } else if(s.tipo==='ctr'){
-      const base=gv('r-ctr')||0;
-      const novo=(base*(1+v/100)).toFixed(2);
-      absEl.textContent=base>0?base.toFixed(2)+'% → '+novo+'%':'';
-    } else if(s.tipo==='cad'){
-      const base=gv('r-cad')||0;
-      const novo=(base*(1+v/100)).toFixed(2);
-      absEl.textContent=base>0?base.toFixed(2)+'% → '+novo+'%':'';
-    } else if(s.tipo==='mqltx'){
-      const base=gv('r-mqltx')||0;
-      const novo=(base*(1+v/100)).toFixed(1);
-      absEl.textContent=base>0?base.toFixed(1)+'% → '+novo+'%':'';
-    } else {
-      absEl.textContent='';
-    }
+    const base=s.tipo==='budget'?gv('r-budget'):s.tipo==='ctr'?gv('r-ctr'):s.tipo==='cad'?gv('r-cad'):s.tipo==='eleg'?gv('r-eleg'):0;
+    if(!base){absEl.textContent='';return;}
+    if(s.tipo==='budget') absEl.textContent=fRfull(base)+' → '+fRfull(Math.round(base*(1+v/100)));
+    else absEl.textContent=base.toFixed(2)+'% → '+(base*(1+v/100)).toFixed(2)+'%';
   });
 }
 
