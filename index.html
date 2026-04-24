@@ -339,34 +339,34 @@ let acao='cro';
 
 const acoes={
   cro:{
-    ctx:'CRO na LP melhora a tx. de cadastro (mais cliques viram contatos) e a tx. de elegibilidade (mais contatos viram MQL). Principal alavanca para recuperar volume de LDM.',
+    ctx:'CRO na LP melhora a tx. de cadastro (mais cliques viram contatos) e a tx. de elegibilidade (mais contatos viram MQL). Use negativo para simular uma piora, 0 para manter o ritmo atual, positivo para simular melhoria.',
     sliders:[
-      {id:'s1',label:'Melhoria na tx. de cadastro (%)',min:1,max:100,step:1,val:20,unit:'%',tipo:'cad'},
-      {id:'s2',label:'Melhoria na tx. de elegibilidade (%)',min:0,max:80,step:1,val:15,unit:'%',tipo:'eleg'},
+      {id:'s1',label:'Variação na tx. de cadastro (%)',min:-50,max:100,step:1,val:0,unit:'%',tipo:'cad'},
+      {id:'s2',label:'Variação na tx. de elegibilidade (%)',min:-50,max:100,step:1,val:0,unit:'%',tipo:'eleg'},
     ]
   },
   budget:{
-    ctx:'O slider simula um aumento no budget total aprovado do mês. O impacto é calculado sobre os dias restantes — o que já foi consumido (R$ fixo) não muda. Mais budget nos dias restantes gera mais cliques e, em cascata, mais MQLs.',
+    ctx:'Simula variação no budget total aprovado do mês. Negativo = corte de budget. Zero = sem mudança. Positivo = aumento. O impacto age sobre o saldo restante a investir.',
     sliders:[
-      {id:'s1',label:'Aumento no budget total aprovado (%)',min:1,max:100,step:1,val:10,unit:'%',tipo:'budget',showAbs:true},
+      {id:'s1',label:'Variação no budget total aprovado (%)',min:-50,max:100,step:1,val:0,unit:'%',tipo:'budget',showAbs:true},
     ]
   },
   ctr:{
-    ctx:'CTR mede a qualidade dos criativos e da segmentação. Mais cliques com o mesmo budget sem mexer nas taxas de conversão.',
+    ctx:'Variação no CTR médio. Negativo = criativos pioraram ou audiência menos qualificada. Zero = ritmo atual. Positivo = melhoria com criativos ou segmentação.',
     sliders:[
-      {id:'s1',label:'Melhoria de CTR (%)',min:1,max:80,step:1,val:30,unit:'%',tipo:'ctr',showAbs:true},
+      {id:'s1',label:'Variação de CTR (%)',min:-50,max:100,step:1,val:0,unit:'%',tipo:'ctr',showAbs:true},
     ]
   },
   cadastro:{
-    ctx:'Tx. cadastro = clique → contato qualificado. CRO focado em header, CTA e form da LP converte mais visitantes sem precisar de mais tráfego.',
+    ctx:'Variação na tx. de cadastro (clique → contato qualificado). Negativo = LP convertendo menos. Zero = ritmo atual. Positivo = CRO melhorou a conversão.',
     sliders:[
-      {id:'s1',label:'Melhoria na tx. de cadastro (%)',min:1,max:80,step:1,val:25,unit:'%',tipo:'cad',showAbs:true},
+      {id:'s1',label:'Variação na tx. de cadastro (%)',min:-50,max:100,step:1,val:0,unit:'%',tipo:'cad',showAbs:true},
     ]
   },
   eleg:{
-    ctx:'Tx. elegibilidade = contato qualificado → MQL/LDM. Melhora com qualidade de audiência (fit de ICP) e segmentação mais precisa nas campanhas.',
+    ctx:'Variação na tx. de elegibilidade (contato → MQL/LDM). Negativo = audiência menos aderente ao ICP. Zero = ritmo atual. Positivo = melhor segmentação.',
     sliders:[
-      {id:'s1',label:'Melhoria na tx. de elegibilidade (%)',min:1,max:80,step:1,val:20,unit:'%',tipo:'eleg',showAbs:true},
+      {id:'s1',label:'Variação na tx. de elegibilidade (%)',min:-50,max:100,step:1,val:0,unit:'%',tipo:'eleg',showAbs:true},
     ]
   },
 };
@@ -591,12 +591,17 @@ function renderSliders(){
       <div class="sh">
         <span class="sl">${s.label}</span>
         <div class="sv-wrap">
-          <span class="sv" id="sv-${s.id}">${s.val>0&&s.unit==='%'?'+':''}${s.val}${s.unit}</span>
+          <span class="sv" id="sv-${s.id}" style="color:${s.val>0?'#1D9E75':s.val<0?'#E24B4A':'#1a1a1a'}">${s.val>0?'+':''}${s.val}${s.unit}</span>
           <span class="sv-abs" id="sv-abs-${s.id}"></span>
         </div>
       </div>
       <input type="range" min="${s.min}" max="${s.max}" step="${s.step}" value="${s.val}"
-        oninput="document.getElementById('sv-${s.id}').innerText=(this.value>0&&'${s.unit}'==='%'?'+':'')+this.value+'${s.unit}';runSim()">
+        oninput="
+          const v=parseFloat(this.value);
+          const el=document.getElementById('sv-${s.id}');
+          el.innerText=(v>0?'+':'')+v+'${s.unit}';
+          el.style.color=v>0?'#1D9E75':v<0?'#E24B4A':'#1a1a1a';
+          runSim()">
     </div>`).join('');
   updateSliderAbs();
 }
