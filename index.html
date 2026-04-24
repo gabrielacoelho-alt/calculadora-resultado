@@ -529,25 +529,28 @@ function runSim(){
   // MQLs já realizados são fixos — melhoria só age nos dias restantes
   const mqlFixo=gv('r-mql')||0;
 
-  let nMql=base.mql;
+  // base sem melhoria = projeção Hunter (fixo + ritmo atual × restantes)
+  const projBase = Math.round(mqlFixo + ritmoAtual * restantes);
+  let nMql = projBase; // começa igual à projeção base
   let nMqltx=base.mqltx;
   let nSqltx=base.sqltx;
+  let acaoTopo = false;
 
   cfg.sliders.forEach((s,i)=>{
     const v=vs[i]!==undefined?vs[i]:s.val;
     const fator=1+v/100;
 
     if(s.tipo==='budget'){
+      acaoTopo = true;
       const aprovado=gv('m-budget')||0;
       const consumido=gv('r-budget')||0;
       const saldoAtual=aprovado-consumido;
       const novoSaldo=aprovado*fator-consumido;
       const budgetFator=saldoAtual>0?(novoSaldo/saldoAtual):1;
-      // impacto só nos dias restantes
       nMql=Math.round(mqlFixo + ritmoAtual*restantes*budgetFator);
     }
     if(s.tipo==='ctr'||s.tipo==='cad'||s.tipo==='eleg'){
-      // melhoria de topo: ritmo diário melhora nos dias restantes
+      acaoTopo = true;
       nMql=Math.round(mqlFixo + ritmoAtual*restantes*fator);
     }
     if(s.tipo==='mqltx_var') nMqltx=base.mqltx*fator;
@@ -556,6 +559,7 @@ function runSim(){
 
   // CRO: cascata de cadastro × elegibilidade, só nos dias restantes
   if(acao==='cro'&&vs.length>=2){
+    acaoTopo = true;
     const vCad=vs[0]||0, vEleg=vs[1]||0;
     const fatorCRO=(1+vCad/100)*(1+vEleg/100);
     nMql=Math.round(mqlFixo + ritmoAtual*restantes*fatorCRO);
