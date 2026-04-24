@@ -110,10 +110,10 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
 <p class="subtitle">Levantada de Mão — meta, realizado e simulação de melhorias</p>
 
 <div class="top-row">
-  <div class="field"><label>Mês vigente</label><input type="text" id="mes" value="Abril/26" oninput="runAll()"></div>
-  <div class="field"><label>Dias úteis do mês</label><input type="number" id="du-total" value="20" oninput="runAll()"></div>
-  <div class="field"><label>Dias úteis decorridos</label><input type="number" id="du-pass" value="14" oninput="runAll()"></div>
-  <div class="field"><label>Pipeline / OPP médio (R$)</label><input type="number" id="ppopp" value="4656" oninput="runAll()"></div>
+  <div class="field"><label>Mês vigente</label><input type="text" id="mes" value="" placeholder="ex: Maio / 26" oninput="runAll()"></div>
+  <div class="field"><label>Dias úteis do mês</label><input type="number" id="du-total" value="" placeholder="ex: 21" oninput="runAll()"></div>
+  <div class="field"><label>Dias úteis decorridos</label><input type="number" id="du-pass" value="" placeholder="ex: 10" oninput="runAll()"></div>
+  <div class="field"><label>Pipeline / OPP médio (R$)</label><input type="number" id="ppopp" value="" placeholder="ex: 6900" oninput="runAll()"></div>
 </div>
 
 <!-- SEÇÃO 1 -->
@@ -122,23 +122,23 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
 
 <div class="section-sep">Topo de funil — mídia</div>
 <div class="kpi-grid">
-  <div class="kpi-card"><div class="kpi-name">Budget</div><div class="kpi-sub">investimento total do mês (R$)</div><label>Meta</label><input type="number" id="m-budget" value="" placeholder="aguardando dado de mídia" oninput="runAll()"></div>
-  <div class="kpi-card"><div class="kpi-name">CTR médio</div><div class="kpi-sub">cliques / impressões (%)</div><label>Meta</label><input type="number" id="m-ctr" value="" step="0.01" placeholder="aguardando dado de mídia" oninput="runAll()"></div>
-  <div class="kpi-card"><div class="kpi-name">Tx. cadastro</div><div class="kpi-sub">clique → contato qualificado (%)</div><label>Meta</label><input type="number" id="m-cad" value="" step="0.01" placeholder="aguardando dado de mídia" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">Budget</div><div class="kpi-sub">investimento total do mês (R$)</div><label>Meta</label><input type="number" id="m-budget" value="" placeholder="ex: 176928" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">CTR médio</div><div class="kpi-sub">cliques / impressões (%)</div><label>Meta</label><input type="number" id="m-ctr" value="" step="0.01" placeholder="ex: 3.96" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">Tx. cadastro</div><div class="kpi-sub">clique → contato qualificado (%)</div><label>Meta</label><input type="number" id="m-cad" value="" step="0.01" placeholder="ex: 2.0" oninput="runAll()"></div>
 </div>
 
 <div class="section-sep">Meio de funil — qualificação</div>
 <div class="kpi-grid">
-  <div class="kpi-card"><div class="kpi-name">Tx. elegibilidade</div><div class="kpi-sub">contato qualificado → MQL (%)</div><label>Meta</label><input type="number" id="m-eleg" value="" step="0.01" placeholder="aguardando dado de mídia" oninput="runAll()"></div>
-  <div class="kpi-card"><div class="kpi-name">MQL (LDM)</div><div class="kpi-sub">levantadas de mão</div><label>Meta</label><input type="number" id="m-mql" value="261" oninput="runAll()"></div>
-  <div class="kpi-card"><div class="kpi-name">Tx. MQL→SQL</div><div class="kpi-sub">MQL qualificado por vendas (%)</div><label>Meta</label><input type="number" id="m-mqltx" value="50" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">Tx. elegibilidade</div><div class="kpi-sub">contato qualificado → MQL (%)</div><label>Meta</label><input type="number" id="m-eleg" value="" step="0.01" placeholder="ex: 1.79" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">MQL (LDM)</div><div class="kpi-sub">levantadas de mão</div><label>Meta</label><input type="number" id="m-mql" value="" placeholder="ex: 261" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">Tx. MQL→SQL</div><div class="kpi-sub">MQL qualificado por vendas (%)</div><label>Meta</label><input type="number" id="m-mqltx" value="" placeholder="ex: 53" oninput="runAll()"></div>
 </div>
 
 <div class="section-sep">Fundo de funil — vendas</div>
 <div class="kpi-grid">
-  <div class="kpi-card"><div class="kpi-name">SQL</div><div class="kpi-sub">qualificados por vendas</div><label>Meta</label><input type="number" id="m-sql" value="130" oninput="runAll()"></div>
-  <div class="kpi-card"><div class="kpi-name">OPP</div><div class="kpi-sub">oportunidades abertas</div><label>Meta</label><input type="number" id="m-opp" value="122" oninput="runAll()"></div>
-  <div class="kpi-card"><div class="kpi-name">Pipeline</div><div class="kpi-sub">valor total de oportunidades (R$)</div><label>Meta</label><input type="number" id="m-pipe" value="541000" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">SQL</div><div class="kpi-sub">qualificados por vendas</div><label>Meta</label><input type="number" id="m-sql" value="" placeholder="ex: 130" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">OPP</div><div class="kpi-sub">oportunidades abertas</div><label>Meta</label><input type="number" id="m-opp" value="" placeholder="ex: 122" oninput="runAll()"></div>
+  <div class="kpi-card"><div class="kpi-name">Pipeline</div><div class="kpi-sub">valor total de oportunidades (R$)</div><label>Meta</label><input type="number" id="m-pipe" value="" placeholder="ex: 541000" oninput="runAll()"></div>
 </div>
 
 <div class="divider"></div>
@@ -185,7 +185,7 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
 <div class="result-grid">
   <div class="rcard">
     <div class="rname">Tx. elegibilidade</div><div class="rsub">contato qualificado → MQL (%)</div>
-    <input type="number" id="r-eleg" value="" step="0.01" placeholder="aguardando dado de mídia" oninput="runAll()">
+    <input type="number" id="r-eleg" value="" step="0.01" placeholder="ex: 1.79" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-eleg">—</span></div>
     <div class="proj-block"><div class="proj-title">Referência histórica</div>
       <div class="proj-row-inner"><span class="proj-lbl">Média H1/26</span><span class="proj-val">1,38%</span></div>
@@ -195,7 +195,7 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
   </div>
   <div class="rcard">
     <div class="rname">MQL (LDM)</div><div class="rsub">levantadas de mão até hoje</div>
-    <input type="number" id="r-mql" value="123" oninput="runAll()">
+    <input type="number" id="r-mql" value="" placeholder="ex: 120" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-mql">—</span></div>
     <div class="proj-block"><div class="proj-title">Projeção de fechamento</div>
       <div class="proj-row-inner"><span class="proj-lbl">Valor</span><span class="proj-val" id="p-mql">—</span></div>
@@ -205,11 +205,11 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
   </div>
   <div class="rcard">
     <div class="rname">Tx. MQL→SQL</div><div class="rsub">MQL qualificado por vendas (%)</div>
-    <input type="number" id="r-mqltx" value="61" oninput="runAll()">
+    <input type="number" id="r-mqltx" value="" placeholder="ex: 53" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-mqltx">—</span></div>
     <div class="proj-block"><div class="proj-title">Referência histórica</div>
-      <div class="proj-row-inner"><span class="proj-lbl">Meta abr</span><span class="proj-val">50%</span></div>
-      <div class="proj-row-inner"><span class="proj-lbl">Jan/26 (melhor)</span><span class="proj-val">69%</span></div>
+      <div class="proj-row-inner"><span class="proj-lbl">Q1/26</span><span class="proj-val">29%</span></div>
+      <div class="proj-row-inner"><span class="proj-lbl">Abr/26</span><span class="proj-val">53%</span></div>
     </div>
     <div class="mini-bar"><div class="mini-fill" id="b-mqltx"></div></div>
   </div>
@@ -219,7 +219,7 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
 <div class="result-grid">
   <div class="rcard">
     <div class="rname">SQL</div><div class="rsub">qualificados por vendas até hoje</div>
-    <input type="number" id="r-sql" value="75" oninput="runAll()">
+    <input type="number" id="r-sql" value="" placeholder="ex: 69" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-sql">—</span></div>
     <div class="proj-block"><div class="proj-title">Projeção de fechamento</div>
       <div class="proj-row-inner"><span class="proj-lbl">Valor</span><span class="proj-val" id="p-sql">—</span></div>
@@ -228,18 +228,8 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
     <div class="mini-bar"><div class="mini-fill" id="b-sql"></div></div>
   </div>
   <div class="rcard">
-    <div class="rname">Tx. SQL→OPP</div><div class="rsub">% de conversão atual</div>
-    <input type="number" id="r-sqltx" value="85" oninput="runAll()">
-    <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-sqltx">—</span></div>
-    <div class="proj-block"><div class="proj-title">Referência histórica</div>
-      <div class="proj-row-inner"><span class="proj-lbl">Meta abr</span><span class="proj-val">94%</span></div>
-      <div class="proj-row-inner"><span class="proj-lbl">Q1/26</span><span class="proj-val">87%</span></div>
-    </div>
-    <div class="mini-bar"><div class="mini-fill" id="b-sqltx"></div></div>
-  </div>
-  <div class="rcard">
     <div class="rname">OPP</div><div class="rsub">oportunidades abertas até hoje</div>
-    <input type="number" id="r-opp" value="64" oninput="runAll()">
+    <input type="number" id="r-opp" value="" placeholder="ex: 56" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-opp">—</span></div>
     <div class="proj-block"><div class="proj-title">Projeção de fechamento</div>
       <div class="proj-row-inner"><span class="proj-lbl">Valor</span><span class="proj-val" id="p-opp">—</span></div>
@@ -249,7 +239,7 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
   </div>
   <div class="rcard">
     <div class="rname">Pipeline</div><div class="rsub">valor gerado até hoje (R$)</div>
-    <input type="number" id="r-pipe" value="298000" oninput="runAll()">
+    <input type="number" id="r-pipe" value="" placeholder="ex: 268000" oninput="runAll()">
     <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-pipe">—</span></div>
     <div class="proj-block"><div class="proj-title">Projeção de fechamento</div>
       <div class="proj-row-inner"><span class="proj-lbl">Valor</span><span class="proj-val" id="p-pipe">—</span></div>
@@ -435,13 +425,13 @@ function runSection2(){
   if(bElB&&aBudgetPct!==null){ bElB.style.width=Math.min(aBudgetPct,100)+'%'; bElB.style.background=aBudgetPct>=90?'#1D9E75':aBudgetPct>=70?'#BA7517':'#E24B4A'; }
 
   const items=[
+    {id:'budget', r:gv('r-budget'), m:gv('m-budget'), isPct:false, fmt:fR},
     {id:'ctr',    r:gv('r-ctr'),    m:gv('m-ctr'),    isPct:true,  fmt:v=>parseFloat(v).toFixed(2)+'%'},
     {id:'cad',    r:gv('r-cad'),    m:gv('m-cad'),    isPct:true,  fmt:v=>parseFloat(v).toFixed(2)+'%'},
     {id:'eleg',   r:gv('r-eleg'),   m:gv('m-eleg'),   isPct:true,  fmt:v=>parseFloat(v).toFixed(2)+'%'},
     {id:'mql',    r:gv('r-mql'),    m:gv('m-mql'),    isPct:false, fmt:fN},
-    {id:'mqltx',  r:gv('r-mqltx'),  m:gv('m-mqltx'),  isPct:true,  fmt:v=>parseFloat(v).toFixed(1)+'%'},
+    {id:'mqltx',  r:gv('r-mqltx'), m:gv('m-mqltx'),  isPct:true,  fmt:v=>parseFloat(v).toFixed(1)+'%'},
     {id:'sql',    r:gv('r-sql'),    m:gv('m-sql'),    isPct:false, fmt:fN},
-    {id:'sqltx',  r:gv('r-sqltx'),  m:94,             isPct:true,  fmt:v=>parseFloat(v).toFixed(1)+'%'},
     {id:'opp',    r:gv('r-opp'),    m:gv('m-opp'),    isPct:false, fmt:fN},
     {id:'pipe',   r:gv('r-pipe'),   m:gv('m-pipe'),   isPct:false, fmt:fR},
   ];
@@ -539,14 +529,6 @@ function runSim(){
     if(s.tipo==='sqltx_var') nSqltx=base.sqltx*(1+v/100);
   });
 
-  // CRO aplica cadastro E elegibilidade em cascata
-  if(acao==='cro'&&vs.length>=2){
-    const vCad=vs[0]||0, vEleg=vs[1]||0;
-    nMql=Math.round(base.mql*(1+vCad/100)*(1+vEleg/100));
-  }
-
-  const nSql=Math.round(nMql*nMqltx);
-  const nOpp=Math.round(nSql*nSqltx);
   // CRO aplica cadastro E elegibilidade em cascata
   if(acao==='cro'&&vs.length>=2){
     const vCad=vs[0]||0, vEleg=vs[1]||0;
@@ -776,7 +758,7 @@ function checkVisaoSalva(){
   }catch(e){}
 }
 
-window.onload=()=>{renderSliders();runAll();checkVisaoSalva();};
+window.onload=()=>{ acao="cro"; const fp=document.querySelector(".pill.active"); if(fp) fp.classList.remove("comercial"); renderSliders(); runAll(); checkVisaoSalva(); };
 </script>
 </body>
 </html>
