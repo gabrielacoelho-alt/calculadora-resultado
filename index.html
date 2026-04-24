@@ -149,12 +149,12 @@ input[type=range]{width:100%;accent-color:#1a1a1a;margin-top:4px}
 <div class="section-sep">Topo de funil — mídia</div>
 <div class="result-grid">
   <div class="rcard">
-    <div class="rname">Budget</div><div class="rsub">R$ consumido até hoje</div>
+    <div class="rname">Budget consumido</div><div class="rsub">R$ investido até hoje</div>
     <input type="number" id="r-budget" value="" placeholder="ex: 152788" oninput="runAll()">
-    <div class="stat-row"><span class="stat-lbl">Atingido</span><span class="stat-val" id="a-budget">—</span></div>
-    <div class="proj-block"><div class="proj-title">Projeção de fechamento</div>
-      <div class="proj-row-inner"><span class="proj-lbl">Valor</span><span class="proj-val" id="p-budget">—</span></div>
-      <div class="proj-row-inner"><span class="proj-lbl">% da meta</span><span class="proj-val" id="pp-budget">—</span></div>
+    <div class="stat-row"><span class="stat-lbl">% do aprovado</span><span class="stat-val" id="a-budget">—</span></div>
+    <div class="proj-block"><div class="proj-title">Visão do budget</div>
+      <div class="proj-row-inner"><span class="proj-lbl">Aprovado total</span><span class="proj-val" id="p-budget">—</span></div>
+      <div class="proj-row-inner"><span class="proj-lbl">Saldo restante</span><span class="proj-val" id="pp-budget">—</span></div>
     </div>
     <div class="mini-bar"><div class="mini-fill" id="b-budget"></div></div>
   </div>
@@ -346,9 +346,9 @@ const acoes={
     ]
   },
   budget:{
-    ctx:'Mais budget gera mais cliques e, em cascata, mais contatos e MQLs — mantendo as taxas de conversão atuais.',
+    ctx:'O slider simula um aumento no budget total aprovado do mês. O impacto é calculado sobre os dias restantes — o que já foi consumido (R$ fixo) não muda. Mais budget nos dias restantes gera mais cliques e, em cascata, mais MQLs.',
     sliders:[
-      {id:'s1',label:'Aumento de budget (%)',min:1,max:100,step:1,val:20,unit:'%',tipo:'budget',showAbs:true},
+      {id:'s1',label:'Aumento no budget total aprovado (%)',min:1,max:100,step:1,val:10,unit:'%',tipo:'budget',showAbs:true},
     ]
   },
   ctr:{
@@ -386,6 +386,20 @@ function projHunter(real,dp,dt){
 function runSection2(){
   const dp=gv('du-pass')||0;
   const dt=gv('du-total')||0;
+
+  // budget tratado separadamente — não entra no loop de items
+  const budgetAprovado=gv('m-budget')||0;
+  const budgetConsumido=gv('r-budget')||0;
+  const saldo=budgetAprovado-budgetConsumido;
+  const aBudgetPct=budgetAprovado>0?Math.round((budgetConsumido/budgetAprovado)*100):null;
+  const aElB=document.getElementById('a-budget');
+  const pElB=document.getElementById('p-budget');
+  const ppElB=document.getElementById('pp-budget');
+  const bElB=document.getElementById('b-budget');
+  if(aElB) { aElB.textContent=aBudgetPct!==null?aBudgetPct+'%':'—'; aElB.className='stat-val '+(aBudgetPct>=90?'g':aBudgetPct>=70?'am':aBudgetPct!==null?'r':'n'); }
+  if(pElB) pElB.textContent=budgetAprovado>0?fR(budgetAprovado):'preencha o budget aprovado';
+  if(ppElB){ ppElB.textContent=saldo>0?fR(saldo)+' a investir':saldo===0?'budget esgotado':fR(Math.abs(saldo))+' acima do aprovado'; ppElB.className='proj-val '+(saldo>=0?'g':'r'); }
+  if(bElB&&aBudgetPct!==null){ bElB.style.width=Math.min(aBudgetPct,100)+'%'; bElB.style.background=aBudgetPct>=90?'#1D9E75':aBudgetPct>=70?'#BA7517':'#E24B4A'; }
 
   const items=[
     {id:'budget', r:gv('r-budget'), m:gv('m-budget'), isPct:false, fmt:fR},
@@ -475,7 +489,19 @@ function runSim(){
 
   cfg.sliders.forEach((s,i)=>{
     const v=vs[i]!==undefined?vs[i]:s.val;
-    if(s.tipo==='budget') nMql=Math.round(base.mql*(1+v/100));
+    if(s.tipo==='budget'){
+      // budget: aumento sobre o aprovado total → impacto só nos dias restantes
+      const aprovado=gv('m-budget')||0;
+      const consumido=gv('r-budget')||0;
+      const dp=gv('du-pass')||0, dt=gv('du-total')||0;
+      const restantes=Math.max(dt-dp,0);
+      const saldoAtual=aprovado-consumido;
+      const novoAprovado=aprovado*(1+v/100);
+      const novoSaldo=novoAprovado-consumido;
+      // impacto proporcional: mais saldo nos dias restantes gera mais MQLs
+      const fatorExtra=saldoAtual>0?(novoSaldo/saldoAtual):1;
+      nMql=Math.round(base.mql*fatorExtra);
+    }
     if(s.tipo==='ctr')    nMql=Math.round(base.mql*(1+v/100));
     if(s.tipo==='cad')    nMql=Math.round(base.mql*(1+v/100));
     if(s.tipo==='eleg')   nMql=Math.round(base.mql*(1+v/100));
@@ -538,7 +564,13 @@ function updateSliderAbs(){
     if(!absEl) return;
     const base=s.tipo==='budget'?gv('r-budget'):s.tipo==='ctr'?gv('r-ctr'):s.tipo==='cad'?gv('r-cad'):s.tipo==='eleg'?gv('r-eleg'):0;
     if(!base){absEl.textContent='';return;}
-    if(s.tipo==='budget') absEl.textContent=fRfull(base)+' → '+fRfull(Math.round(base*(1+v/100)));
+    if(s.tipo==='budget'){
+      const aprovado=gv('m-budget')||0;
+      const consumido=gv('r-budget')||0;
+      const novoAprovado=Math.round(aprovado*(1+v/100));
+      const novoSaldo=novoAprovado-consumido;
+      absEl.textContent=aprovado>0?fRfull(aprovado)+' → '+fRfull(novoAprovado)+' (saldo: '+fR(novoSaldo)+')':'preencha o budget aprovado';
+    }
     else absEl.textContent=base.toFixed(2)+'% → '+(base*(1+v/100)).toFixed(2)+'%';
   });
 }
